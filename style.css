@@ -1,0 +1,87 @@
+body {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100dvh;
+  background-image: radial-gradient(black, #0b183a);
+  font-family: Arial, sans-serif;
+}
+
+#visualizerCanvas {
+  display: block;
+  margin: auto;
+}
+
+#fileSelector,
+#playPauseButton,
+#fullscreenButton,
+#musicNameLabel,
+#title,
+#instructions {
+  position: absolute;
+  color: white;
+  font-size: 16px;
+}
+
+#fileSelector {
+  top: 20px;
+  left: 20px;
+  padding:8px 10px;
+  border: 2px solid white;
+  background-color: transparent;
+  cursor: pointer;
+  z-index: 2;
+  color: white;
+  border-radius:10px;
+  /* Additional styles specific to the label */
+  font-size: 16px;
+}
+
+#audioFileInput {
+  /* Add any specific styles for the file input here */
+  display: none;
+  /* Optional: hide the file input, you can change this based on your needs */
+}
+
+#playPauseButton {
+  top: 20px;
+  right: 120px;
+  padding: 8px 10px;
+  border: 2px solid white;
+  background-color: transparent;
+  cursor: pointer;
+  z-index: 2;
+  border-radius:10px 4px 4px 10px;
+}
+
+#fullscreenButton {
+  top: 20px;
+  right: 20px;
+  padding: 8px 10px;
+  border: 2px solid white;
+  background-color: transparent;
+  cursor: pointer;
+  z-index: 2;
+  border-radius:4px 10px 10px 4px;
+}
+
+#musicNameLabel {
+  top: 50px;
+  right: 20px;
+  visibility: hidden;
+  transition: visibility 0s, opacity 0.4s;
+}
+
+#title {
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#instructions {
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
