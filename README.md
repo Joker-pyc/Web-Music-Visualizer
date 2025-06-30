@@ -35,7 +35,7 @@ This isn't just a music player; it's an audio-visual experience.
 
 ## 🚀 Live Demo & Screenshots
 
-See it in action! **[> Click here for the Live Demo <]**
+See it in action! **[Live Demo](https://joker-pyc.github.io/Web-Music-Visualizer/)**
 
 
 
