@@ -1,24 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Particle Effect Music Visualizer</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Music Visualizer</title>
+    <link rel="stylesheet" href="style.css">
+   
 </head>
 <body>
-  <canvas id="visualizerCanvas"></canvas>
-  
-  <label for="audioFileInput" id="fileSelector">Choose Music</label>
-  <input type="file" id="audioFileInput" accept="audio/*">
-  <button id="playPauseButton">Play</button>
-  <button id="fullscreenButton">Fullscreen</button>
-  
-  <div id="musicNameLabel"></div>
-  
-  <h1 id="title">Particle Effect Music Visualizer</h1>
-  <i id="instructions">Choose a music file to start the visualization.<br>Tap the Play button to pause and resume the music.</i>
-  
-  <script src="script.js"></script>
+    <div class="visualizer-container">
+        <canvas id="canvasBloom"></canvas>
+        <canvas id="canvas"></canvas>
+        
+        <div class="beat-indicator" id="beatIndicator"></div>
+        
+        <div class="now-playing" id="nowPlaying">
+            <span id="nowPlayingText">No track selected</span>
+        </div>
+        
+        <button class="control-btn fullscreen-toggle" id="fullscreenBtn" aria-label="Toggle fullscreen">
+            <span id="fullscreenIcon">⛶</span>
+        </button>
+        
+        <div class="controls-container">
+            <div class="file-input-container">
+                <input type="file" id="audioFile" class="file-input" accept="audio/*" aria-label="Choose music file">
+                <label for="audioFile" class="file-label">Choose Music</label>
+            </div>
+            
+            <div class="glass-panel music-player" id="musicPlayer" style="display: none;">
+                <div class="player-top">
+                    <div class="track-info">
+                        <div class="track-title" id="trackTitle">Select a track</div>
+                        <div class="track-artist" id="trackArtist">Unknown Artist</div>
+                    </div>
+                    
+                    <div class="control-buttons">
+                        <button class="control-btn" id="prevBtn" aria-label="Previous track">⏮</button>
+                        <button class="control-btn play-btn" id="playBtn" aria-label="Play/Pause">▶</button>
+                        <button class="control-btn" id="nextBtn" aria-label="Next track">⏭</button>
+                        <button class="control-btn" id="volumeBtn" aria-label="Volume">🔊</button>
+                    </div>
+                </div>
+                
+                <div class="progress-container">
+                    <span class="time-display" id="currentTime">0:00</span>
+                    <div class="progress-bar" id="progressBar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <span class="time-display" id="duration">0:00</span>
+                </div>
+                
+                <div class="waveform-container" id="waveform">
+                    <!-- Frequency bars will be generated here -->
+                </div>
+            </div>
+        </div>
+        
+        <audio id="audio" preload="auto"></audio>
+    </div>
+
+   <script src="patterns/pattern0.js" defer></script>
 </body>
 </html>

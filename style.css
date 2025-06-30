@@ -1,87 +1,343 @@
+
+:root {
+    --glass-primary: rgba(255, 255, 255, 0.08);
+    --glass-secondary: rgba(255, 255, 255, 0.04);
+    --glass-accent: rgba(138, 180, 248, 0.12);
+    --glass-border: rgba(255, 255, 255, 0.16);
+    --bass-glow: rgba(255, 71, 87, 0.3);
+    --mid-glow: rgba(52, 211, 153, 0.3);
+    --treble-glow: rgba(59, 130, 246, 0.3);
+    --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.12);
+    --shadow-inset: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    --blur-intensity: 12px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
-  margin: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100dvh;
-  background-image: radial-gradient(black, #0b183a);
-  font-family: Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    position: relative;
 }
 
-#visualizerCanvas {
-  display: block;
-  margin: auto;
+.visualizer-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
-#fileSelector,
-#playPauseButton,
-#fullscreenButton,
-#musicNameLabel,
-#title,
-#instructions {
-  position: absolute;
-  color: white;
-  font-size: 16px;
+#canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    filter: blur(0px) brightness(1.2) contrast(1.1);
+    transition: filter 0.3s ease;
 }
 
-#fileSelector {
-  top: 20px;
-  left: 20px;
-  padding:8px 10px;
-  border: 2px solid white;
-  background-color: transparent;
-  cursor: pointer;
-  z-index: 2;
-  color: white;
-  border-radius:10px;
-  /* Additional styles specific to the label */
-  font-size: 16px;
+#canvas.bloom {
+    filter: blur(1px) brightness(1.5) contrast(1.3) saturate(1.4);
 }
 
-#audioFileInput {
-  /* Add any specific styles for the file input here */
-  display: none;
-  /* Optional: hide the file input, you can change this based on your needs */
+#canvasBloom {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    filter: blur(8px) brightness(2) contrast(0.8);
+    opacity: 0.6;
+    mix-blend-mode: screen;
 }
 
-#playPauseButton {
-  top: 20px;
-  right: 120px;
-  padding: 8px 10px;
-  border: 2px solid white;
-  background-color: transparent;
-  cursor: pointer;
-  z-index: 2;
-  border-radius:10px 4px 4px 10px;
+.glass-panel {
+    background: var(--glass-primary);
+    backdrop-filter: blur(var(--blur-intensity));
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    box-shadow: var(--shadow-glass), var(--shadow-inset);
 }
 
-#fullscreenButton {
-  top: 20px;
-  right: 20px;
-  padding: 8px 10px;
-  border: 2px solid white;
-  background-color: transparent;
-  cursor: pointer;
-  z-index: 2;
-  border-radius:4px 10px 10px 4px;
+.controls-container {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
 }
 
-#musicNameLabel {
-  top: 50px;
-  right: 20px;
-  visibility: hidden;
-  transition: visibility 0s, opacity 0.4s;
+.music-player {
+    padding: 20px 24px;
+    min-width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
 }
 
-#title {
-  top: 80px;
-  left: 50%;
-  transform: translateX(-50%);
+.player-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
 }
 
-#instructions {
-  bottom: 40px;
-  left: 50%;
-  transform: translateX(-50%);
-  text-align: center;
+.track-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.track-title {
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.track-artist {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.control-buttons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.control-btn {
+    width: 44px;
+    height: 44px;
+    border: none;
+    border-radius: 12px;
+    background: var(--glass-secondary);
+    backdrop-filter: blur(8px);
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    font-size: 16px;
+}
+
+.control-btn:hover {
+    background: var(--glass-accent);
+    transform: translateY(-2px);
+}
+
+.control-btn:active {
+    transform: translateY(0);
+}
+
+.play-btn {
+    width: 52px;
+    height: 52px;
+    background: var(--glass-accent);
+    font-size: 18px;
+}
+
+.progress-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.time-display {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+    min-width: 32px;
+    text-align: center;
+}
+
+.progress-bar {
+    flex: 1;
+    height: 6px;
+    background: var(--glass-secondary);
+    border-radius: 3px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--bass-glow), var(--mid-glow), var(--treble-glow));
+    border-radius: 3px;
+    width: 0%;
+    transition: width 0.1s ease;
+}
+
+.waveform-container {
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    opacity: 0.6;
+}
+
+.frequency-bar {
+    width: 3px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 1.5px;
+    height: 4px;
+    transition: height 0.1s ease, background-color 0.2s ease;
+}
+
+.file-input-container {
+    position: relative;
+}
+
+.file-input {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.file-label {
+    padding: 12px 20px;
+    border-radius: 12px;
+    background: var(--glass-primary);
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-block;
+    transition: all 0.2s ease;
+    border: 1px solid var(--glass-border);
+}
+
+.file-label:hover {
+    background: var(--glass-accent);
+    transform: translateY(-2px);
+}
+
+.fullscreen-toggle {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    z-index: 10;
+}
+
+.now-playing {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    z-index: 10;
+    padding: 12px 16px;
+    background: var(--glass-primary);
+    backdrop-filter: blur(var(--blur-intensity));
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    color: white;
+    font-size: 13px;
+    font-weight: 500;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: all 0.3s ease;
+}
+
+.now-playing.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.beat-indicator {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 100px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 5;
+    opacity: 0;
+    transform-origin: center;
+    transition: all 0.2s ease;
+}
+
+.beat-indicator.pulse {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.5);
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+@media (max-width: 480px) {
+    .controls-container {
+        bottom: 16px;
+        left: 16px;
+        right: 16px;
+        transform: none;
+    }
+
+    .music-player {
+        min-width: auto;
+        width: 100%;
+        padding: 16px 20px;
+    }
+
+    .fullscreen-toggle {
+        top: 16px;
+        right: 16px;
+    }
+
+    .now-playing {
+        top: 16px;
+        left: 16px;
+        font-size: 12px;
+        padding: 10px 14px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --glass-primary: rgba(255, 255, 255, 0.05);
+        --glass-secondary: rgba(255, 255, 255, 0.02);
+    }
 }
